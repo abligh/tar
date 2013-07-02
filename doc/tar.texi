@@ -3349,11 +3349,12 @@ During extraction @command{tar} will pipe extracted files to the
 standard input of @var{command}.  @xref{Writing to an External Program}.
 
 @opsummary{to-stdout}
-@item --to-stdout
-@itemx -O
+@item --to-stdout[=@var{number}]
+@itemx -O[@var{number}]
 
 During extraction, @command{tar} will extract files to stdout rather
-than to the file system.  @xref{Writing to Standard Output}.
+than to the file system, or (if @var{number} is supplied) a specific
+file.  @xref{Writing to Standard Output}.
 
 @opsummary{totals}
 @item --totals[=@var{signo}]
@@ -5483,16 +5484,22 @@ conjunction with @option{--extract} (@option{--get}, @option{-x}).  This option 
 extracting files to send them through a pipe, and do not need to
 preserve them in the file system.  If you extract multiple members,
 they appear on standard output concatenated, in the order they are
-found in the archive.
+found in the archive, or a specific file if a numeric parameter
+is passed.
 
 @table @option
 @opindex to-stdout
-@item --to-stdout
-@itemx -O
+@item --to-stdout[=@var{number}]
+@itemx -O[@var{number}]
 Writes files to the standard output.  Use only in conjunction with
 @option{--extract} (@option{--get}, @option{-x}).  When this option is
 used, instead of creating the files specified, @command{tar} writes
-the contents of the files extracted to its standard output.  This may
+the concatenated contents of the files extracted to its standard output.
+If @var{number} is specified, instead of concatenating, only the
+file with index @var{number} that would have been sent is used; in
+calculating the index, directories, excluded files and other files
+that would not have been extracted are ignored. Thus @option{--to-stdout=1}
+will always extract the first file that @option{--to-stdout} would concatenate. @option{--to-stdout} may
 be useful if you are only extracting the files in order to send them
 through a pipe.  This option is meaningless with @option{--list}
 (@option{-t}).

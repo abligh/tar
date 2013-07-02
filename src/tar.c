@@ -490,8 +490,9 @@ static struct argp_option options[] = {
   {NULL, 0, NULL, 0,
    N_("Select output stream:"), GRID },
 
-  {"to-stdout", 'O', 0, 0,
-   N_("extract files to standard output"), GRID+1 },
+  {"to-stdout", 'O', N_("NUMBER"), OPTION_ARG_OPTIONAL,
+   N_("extract files to standard output, or if NUMBER specified,"
+      " the file with index number NUMBER"), GRID+1 },
   {"to-command", TO_COMMAND_OPTION, N_("COMMAND"), 0,
    N_("pipe extracted files to another program"), GRID+1 },
   {"ignore-command-error", IGNORE_COMMAND_ERROR_OPTION, 0, 0,
@@ -1680,6 +1681,15 @@ parse_opt (int key, char *arg, struct argp_state *state)
 
     case 'O':
       to_stdout_option = true;
+      if (arg)
+	{
+	  uintmax_t u;
+	  if (xstrtoumax (arg, 0, 10, &u, "") == LONGINT_OK)
+	    to_stdout_index_option = u;
+	  else
+	    FATAL_ERROR ((0, 0, "%s: %s", quotearg_colon (arg),
+			  _("Invalid number")));
+	}
       break;
 
     case 'p':

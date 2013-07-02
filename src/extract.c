@@ -1439,6 +1439,7 @@ static int
 prepare_to_extract (char const *file_name, int typeflag, tar_extractor_t *fun)
 {
   int rc = 1;
+  static uintmax_t extract_index = 0;
 
   if (EXTRACT_OVER_PIPE)
     rc = 0;
@@ -1527,6 +1528,9 @@ prepare_to_extract (char const *file_name, int typeflag, tar_extractor_t *fun)
 
   /* Determine whether the extraction should proceed */
   if (rc == 0)
+    return 0;
+
+  if (to_stdout_index_option && (to_stdout_index_option != ++extract_index))
     return 0;
 
   switch (old_files_option)

@@ -281,6 +281,8 @@ GLOBAL tarlong tape_length_option;
 
 GLOBAL bool to_stdout_option;
 
+GLOBAL uintmax_t to_stdout_index_option;
+
 GLOBAL bool totals_option;
 
 GLOBAL bool touch_option;
